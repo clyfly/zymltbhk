@@ -1,7 +1,11 @@
-FROM 5hojib/aeon:dev
+FROM dawn001/z_mirror:main
 
 WORKDIR /usr/src/app
-RUN pip3 install --no-cache-dir --break-system-packages -r requirements.txt
+RUN chmod 777 /usr/src/app
+
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt --break-system-packages
 
 COPY . .
+
 CMD ["bash", "start.sh"]
