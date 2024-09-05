@@ -1,7 +1,16 @@
-from psutil import cpu_percent, virtual_memory, disk_usage
 from pyrogram.filters import command, regex
 from pyrogram.handlers import MessageHandler, CallbackQueryHandler
 from time import time
+from psutil import (
+    boot_time,
+    cpu_count,
+    cpu_freq,
+    cpu_percent,
+    disk_usage,
+    swap_memory,
+    virtual_memory,
+    net_io_counters
+)
 
 from bot import (
     task_dict_lock,
