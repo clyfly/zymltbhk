@@ -34,3 +34,4 @@ urllib3
 uvloop
 xattr
 yt-dlp
+speedtest-cli
