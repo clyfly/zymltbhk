@@ -767,6 +767,12 @@ async def load_config():
     if len(JD_EMAIL) == 0 or len(JD_PASS) == 0:
         JD_EMAIL = ""
         JD_PASS = ""
+        
+    MEGA_EMAIL = environ.get("MEGA_EMAIL", "")
+    MEGA_PASSWORD = environ.get("MEGA_PASSWORD", "")
+    if len(MEGA_EMAIL) == 0 or len(MEGA_PASSWORD) == 0:
+        MEGA_EMAIL = ""
+        MEGA_PASSWORD = ""
 
     FILELION_API = environ.get("FILELION_API", "")
     if len(FILELION_API) == 0:
@@ -991,6 +997,8 @@ async def load_config():
             "IS_TEAM_DRIVE": IS_TEAM_DRIVE,
             "JD_EMAIL": JD_EMAIL,
             "JD_PASS": JD_PASS,
+            "MEGA_EMAIL": MEGA_EMAIL,
+            "MEGA_PASSWORD": MEGA_PASSWORD,
             "LEECH_DUMP_CHAT": LEECH_DUMP_CHAT,
             "LEECH_FILENAME_PREFIX": LEECH_FILENAME_PREFIX,
             "LEECH_SPLIT_SIZE": LEECH_SPLIT_SIZE,
