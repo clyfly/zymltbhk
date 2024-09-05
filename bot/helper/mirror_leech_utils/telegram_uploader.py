@@ -22,7 +22,7 @@ from tenacity import (
 )
 from time import time
 
-from bot import config_dict, user
+from bot import config_dict, user, bot_name
 from bot.helper.ext_utils.bot_utils import sync_to_async
 from bot.helper.ext_utils.files_utils import clean_unwanted, is_archive, get_base_name
 from bot.helper.ext_utils.media_utils import (
