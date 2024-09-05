@@ -53,136 +53,96 @@ async def get_user_settings(from_user):
 
     thumbmsg = "Exists" if await aiopath.exists(thumbpath) else "Not Exists"
 
-    if user_dict.get("split_size", False):
-        split_size = user_dict["split_size"]
-    else:
-        split_size = config_dict["LEECH_SPLIT_SIZE"]
+    split_size = user_dict.get("split_size", config_dict["LEECH_SPLIT_SIZE"])
 
-    if (
-        user_dict.get("equal_splits", False)
+    equal_splits = (
+        "Enabled"
+        if user_dict.get("equal_splits", False)
         or "equal_splits" not in user_dict
         and config_dict["EQUAL_SPLITS"]
-    ):
-        equal_splits = "Enabled"
-    else:
-        equal_splits = "Disabled"
+        else "Disabled"
+    )
 
-    if (
-        user_dict.get("media_group", False)
+    media_group = (
+        "Enabled"
+        if user_dict.get("media_group", False)
         or "media_group" not in user_dict
         and config_dict["MEDIA_GROUP"]
-    ):
-        media_group = "Enabled"
-    else:
-        media_group = "Disabled"
+        else "Disabled"
+    )
 
-    if user_dict.get("lprefix", False):
-        lprefix = user_dict["lprefix"]
-    elif "lprefix" not in user_dict and (LP := config_dict["LEECH_FILENAME_PREFIX"]):
-        lprefix = LP
-    else:
-        lprefix = "None"
+    lprefix = user_dict.get("lprefix") or config_dict.get("LEECH_FILENAME_PREFIX", "None")
 
-    if user_dict.get("leech_dest", False):
-        leech_dest = user_dict["leech_dest"]
-    elif "leech_dest" not in user_dict and (LD := config_dict["LEECH_DUMP_CHAT"]):
-        leech_dest = LD
-    else:
-        leech_dest = "None"
+    leech_dest = user_dict.get("leech_dest") or config_dict.get("LEECH_DUMP_CHAT", "None")
 
-    if (
-        IS_PREMIUM_USER
+    leech_method = (
+        "user"
+        if IS_PREMIUM_USER
         and user_dict.get("user_transmission", False)
         or "user_transmission" not in user_dict
         and config_dict["USER_TRANSMISSION"]
-    ):
-        leech_method = "user"
-    else:
-        leech_method = "bot"
+        else "bot"
+    )
 
-    if (
-        IS_PREMIUM_USER
+    mixed_leech = (
+        "Enabled"
+        if IS_PREMIUM_USER
         and user_dict.get("mixed_leech", False)
         or "mixed_leech" not in user_dict
         and config_dict["MIXED_LEECH"]
-    ):
-        mixed_leech = "Enabled"
-    else:
-        mixed_leech = "Disabled"
+        else "Disabled"
+    )
 
-    if user_dict.get("metadatatext", False):
-        metadatatext = user_dict["metadatatext"]
-    else:
-        metadatatext = "None"
-
-    if user_dict.get("attachmenturl", False):
-        attachmenturl = user_dict["attachmenturl"]
-    else:
-        attachmenturl = "None"
+    metadatatext = user_dict.get("metadatatext", "None")
+    attachmenturl = user_dict.get("attachmenturl", "None")
 
     buttons.ibutton("Leech", f"userset {user_id} leech")
-
     buttons.ibutton("Rclone", f"userset {user_id} rclone")
+
     rccmsg = "Exists" if await aiopath.exists(rclone_conf) else "Not Exists"
-    if user_dict.get("rclone_path", False):
-        rccpath = user_dict["rclone_path"]
-    elif RP := config_dict["RCLONE_PATH"]:
-        rccpath = RP
-    else:
-        rccpath = "None"
+    rccpath = user_dict.get("rclone_path") or config_dict.get("RCLONE_PATH", "None")
 
     buttons.ibutton("Gdrive Tools", f"userset {user_id} gdrive")
+
     tokenmsg = "Exists" if await aiopath.exists(token_pickle) else "Not Exists"
-    if user_dict.get("gdrive_id", False):
-        gdrive_id = user_dict["gdrive_id"]
-    elif GI := config_dict["GDRIVE_ID"]:
-        gdrive_id = GI
-    else:
-        gdrive_id = "None"
-    index = user_dict["index_url"] if user_dict.get("index_url", False) else "None"
-    if (
-        user_dict.get("stop_duplicate", False)
+    gdrive_id = user_dict.get("gdrive_id") or config_dict.get("GDRIVE_ID", "None")
+    index = user_dict.get("index_url", "None")
+
+    sd_msg = (
+        "Enabled"
+        if user_dict.get("stop_duplicate", False)
         or "stop_duplicate" not in user_dict
         and config_dict["STOP_DUPLICATE"]
-    ):
-        sd_msg = "Enabled"
-    else:
-        sd_msg = "Disabled"
+        else "Disabled"
+    )
 
     upload_paths = "Added" if user_dict.get("upload_paths", False) else "None"
     buttons.ibutton("Upload Paths", f"userset {user_id} upload_paths")
 
-    default_upload = (
-        user_dict.get("default_upload", "") or config_dict["DEFAULT_UPLOAD"]
-    )
-    du = "GD API" if default_upload == "gd" else "Rclone"
-    dub = "GD API" if default_upload != "gd" else "Rclone"
-    buttons.ibutton(f"With {dub}", f"userset {user_id} {default_upload}")
+    default_upload = user_dict.get("default_upload", config_dict["DEFAULT_UPLOAD"])
+    du = "Gd API" if default_upload == "gd" else "Rclone"
+    dub = "Gd API" if default_upload != "gd" else "Rclone"
+    buttons.ibutton(f"Up with {dub}", f"userset {user_id} {default_upload}")
 
     buttons.ibutton("Excluded Exts", f"userset {user_id} ex_ex")
-    if user_dict.get("excluded_extensions", False):
-        ex_ex = user_dict["excluded_extensions"]
-    elif "excluded_extensions" not in user_dict and GLOBAL_EXTENSION_FILTER:
-        ex_ex = GLOBAL_EXTENSION_FILTER
-    else:
-        ex_ex = "None"
+    ex_ex = (
+        user_dict.get("excluded_extensions")
+        or GLOBAL_EXTENSION_FILTER
+        or "None"
+    )
 
     ns_msg = "Added" if user_dict.get("name_sub", False) else "None"
-    buttons.ibutton("Name Subtitute", f"userset {user_id} name_subtitute")
+    buttons.ibutton("Name Substitute", f"userset {user_id} name_subtitute")
 
     buttons.ibutton("YT-DLP Options", f"userset {user_id} yto")
-    if user_dict.get("yt_opt", False):
-        ytopt = user_dict["yt_opt"]
-    elif "yt_opt" not in user_dict and (YTO := config_dict["YT_DLP_OPTIONS"]):
-        ytopt = YTO
-    else:
-        ytopt = "None"
+    ytopt = user_dict.get("yt_opt") or config_dict.get("YT_DLP_OPTIONS", "None")
 
     if user_dict:
         buttons.ibutton("Reset All", f"userset {user_id} reset")
 
     buttons.ibutton("Close", f"userset {user_id} close")
-text = f"""<b><u>Settings for {name}</u></b>
+
+    text = f"""<b><u>Settings for {name}</u></b>
 
 Leech Type: <b>{ltype}</b>
 Split Size: <b>{split_size}</b>
@@ -190,7 +150,8 @@ Destination: <b>{leech_dest}</b>
 Upload Method: <b>{du}</b>
 Stop Duplicate: <b>{sd_msg}</b>
 
-<i><b>Don't touch anything if you’re a noob.</b></i>"""
+<i><b>Make sure you know what you doing!.</b></i>"""
+
     return text, buttons.build_menu(2)
 
 
