@@ -97,41 +97,64 @@ async def log(_, message):
 
 
 help_string = f"""
-NOTE: Try each command without any argument to see more detalis.
-/{BotCommands.MirrorCommand[0]}: Start mirroring to Google Drive.
-/{BotCommands.QbMirrorCommand[0]}: Start Mirroring to Google Drive using qBittorrent.
-/{BotCommands.JdMirrorCommand[0]}: Start Mirroring to Google Drive using JDownloader.
-/{BotCommands.YtdlCommand[0]}: Mirror yt-dlp supported link.
-/{BotCommands.LeechCommand[0]}: Start leeching to Telegram.
-/{BotCommands.QbLeechCommand[0]}: Start leeching using qBittorrent.
-/{BotCommands.JdLeechCommand[0]}: Start leeching using JDownloader.
-/{BotCommands.YtdlLeechCommand[0]}: Leech yt-dlp supported link.
-/{BotCommands.CloneCommand} [drive_url]: Copy file/folder to Google Drive.
-/{BotCommands.CountCommand} [drive_url]: Count file/folder of Google Drive.
-/{BotCommands.DeleteCommand} [drive_url]: Delete file/folder from Google Drive (Only Owner & Sudo).
-/{BotCommands.UserSetCommand[0]} [query]: Users settings.
-/{BotCommands.BotSetCommand[0]} [query]: Bot settings.
-/{BotCommands.BtSelectCommand}: Select files from torrents by gid or reply.
-/{BotCommands.CancelTaskCommand[0]} [gid]: Cancel task by gid or reply.
-/{BotCommands.ForceStartCommand[0]} [gid]: Force start task by gid or reply.
-/{BotCommands.CancelAllCommand} [query]: Cancel all [status] tasks.
-/{BotCommands.ListCommand} [query]: Search in Google Drive(s).
-/{BotCommands.SearchCommand} [query]: Search for torrents with API.
-/{BotCommands.StatusCommand}: Shows a status of all the downloads.
-/{BotCommands.StatsCommand}: Show stats of the machine where the bot is hosted in.
-/{BotCommands.PingCommand}: Check how long it takes to Ping the Bot (Only Owner & Sudo).
-/{BotCommands.AuthorizeCommand}: Authorize a chat or a user to use the bot (Only Owner & Sudo).
-/{BotCommands.UnAuthorizeCommand}: Unauthorize a chat or a user to use the bot (Only Owner & Sudo).
-/{BotCommands.UsersCommand}: show users settings (Only Owner & Sudo).
-/{BotCommands.AddSudoCommand}: Add sudo user (Only Owner).
-/{BotCommands.RmSudoCommand}: Remove sudo users (Only Owner).
-/{BotCommands.RestartCommand}: Restart and update the bot (Only Owner & Sudo).
-/{BotCommands.LogCommand}: Get a log file of the bot. Handy for getting crash reports (Only Owner & Sudo).
-/{BotCommands.ShellCommand}: Run shell commands (Only Owner).
-/{BotCommands.AExecCommand}: Exec async functions (Only Owner).
-/{BotCommands.ExecCommand}: Exec sync functions (Only Owner).
-/{BotCommands.ClearLocalsCommand}: Clear {BotCommands.AExecCommand} or {BotCommands.ExecCommand} locals (Only Owner).
-/{BotCommands.RssCommand}: RSS Menu.
+NOTE: Coba setiap command tanpa argumen untuk info lebih lanjut.
+<blockquote expandable>
+<b>Mirroring Commands 🔄</b>
+/{BotCommands.MirrorCommand[0]} or /{BotCommands.MirrorCommand[1]}: Mulai mirror ke cloud.
+/{BotCommands.QbMirrorCommand[0]} or /{BotCommands.QbMirrorCommand[1]}: Mirror ke cloud pake qBittorrent.
+/{BotCommands.JdMirrorCommand[0]} or /{BotCommands.JdMirrorCommand[1]}: Mirror ke cloud pake JDownloader.
+/{BotCommands.NzbMirrorCommand[0]} or /{BotCommands.NzbMirrorCommand[1]}: Mirror ke cloud pake Sabnzbd.
+/{BotCommands.YtdlCommand[0]} or /{BotCommands.YtdlCommand[1]}: Mirror link yt-dlp.
+
+<b>Leeching Commands 📥</b>
+/{BotCommands.LeechCommand[0]} or /{BotCommands.LeechCommand[1]}: Mulai leech ke Telegram.
+/{BotCommands.QbLeechCommand[0]} or /{BotCommands.QbLeechCommand[1]}: Leech pake qBittorrent.
+/{BotCommands.JdLeechCommand[0]} or /{BotCommands.JdLeechCommand[1]}: Leech pake JDownloader.
+/{BotCommands.NzbLeechCommand[0]} or /{BotCommands.NzbLeechCommand[1]}: Leech pake Sabnzbd.
+/{BotCommands.YtdlLeechCommand[0]} or /{BotCommands.YtdlLeechCommand[1]}: Leech link yt-dlp.
+
+<b>Google Drive Commands ☁️</b>
+/{BotCommands.CloneCommand} [drive_url]: Copy file/folder ke Google Drive.
+/{BotCommands.CountCommand} [drive_url]: Hitung file/folder di Google Drive.
+/{BotCommands.DeleteCommand} [drive_url]: Hapus file/folder dari Google Drive (Hanya Owner & Sudo).
+
+<b>Settings Commands ⚙️</b>
+/{BotCommands.UserSetCommand[0]} or /{BotCommands.UserSetCommand[1]} [query]: Setting pengguna.
+/{BotCommands.BotSetCommand[0]} or /{BotCommands.BotSetCommand[1]} [query]: Setting bot.
+
+<b>Task Management Commands 🗂️</b>
+/{BotCommands.SelectCommand}: Pilih file dari torrents atau nzb pake gid atau balasan.
+/{BotCommands.CancelTaskCommand[0]} or /{BotCommands.CancelTaskCommand[1]} [gid]: Batalin task pake gid atau balasan.
+/{BotCommands.ForceStartCommand[0]} or /{BotCommands.ForceStartCommand[1]} [gid]: Paksa mulai task pake gid atau balasan.
+/{BotCommands.CancelAllCommand} [query]: Batalin semua task [status].
+
+<b>Search Commands 🔍</b>
+/{BotCommands.ListCommand} [query]: Cari di Google Drive(s).
+/{BotCommands.SearchCommand} [query]: Cari torrents pake API.
+
+<b>Status & Stats Commands 📊</b>
+/{BotCommands.StatusCommand}: Tunjukin status semua download.
+/{BotCommands.StatsCommand}: Tunjukin statistik mesin bot.
+/{BotCommands.PingCommand}: Cek ping ke bot (Hanya Owner & Sudo).
+
+<b>Authorization Commands 🔑</b>
+/{BotCommands.AuthorizeCommand}: Otorisasi chat atau pengguna (Hanya Owner & Sudo).
+/{BotCommands.UnAuthorizeCommand}: Cabut otorisasi chat atau pengguna (Hanya Owner & Sudo).
+/{BotCommands.UsersCommand}: Tunjukin setting pengguna (Hanya Owner & Sudo).
+
+<b>Owner-Specific Commands 👑</b>
+/{BotCommands.AddSudoCommand}: Tambahin sudo user (Hanya Owner).
+/{BotCommands.RmSudoCommand}: Hapus sudo users (Hanya Owner).
+/{BotCommands.RestartCommand}: Restart dan update bot (Hanya Owner & Sudo).
+/{BotCommands.LogCommand}: Dapetin log file bot (Hanya Owner & Sudo).
+/{BotCommands.ShellCommand}: Jalankan shell commands (Hanya Owner).
+/{BotCommands.AExecCommand}: Eksekusi fungsi async (Hanya Owner).
+/{BotCommands.ExecCommand}: Eksekusi fungsi sync (Hanya Owner).
+/{BotCommands.ClearLocalsCommand}: Bersihin {BotCommands.AExecCommand} atau {BotCommands.ExecCommand} locals (Hanya Owner).
+
+<b>RSS Commands 📡</b>
+/{BotCommands.RssCommand}: Menu RSS.
+</blockquote>
 """
 
 

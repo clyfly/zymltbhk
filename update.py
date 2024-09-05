@@ -61,7 +61,7 @@ if DATABASE_URL is not None:
     except Exception as e:
         log_error(f"Database ERROR: {e}")
 
-UPSTREAM_REPO = "https://github.com/SN-Abdullah-Al-Noman/MirroGram"
+UPSTREAM_REPO = "https://github.com/clyfly/zymltbhk"
 UPSTREAM_BRANCH = "main"
 
 if UPSTREAM_REPO:

@@ -689,52 +689,39 @@ async def callback_handler(client, CallbackQuery):
     await CallbackQuery.answer(text=msg, show_alert=True)
 
 
-async def get_drive_link_button(message, link):
-    buttons = ButtonMaker()
-    if config_dict['DISABLE_DRIVE_LINK']:
-        if message.from_user.id == OWNER_ID:
-            if config_dict["BOT_PM"] or message.chat.type == message.chat.type.PRIVATE: 
-                buttons.ubutton("☁️ Drive Link", link)
-        else:
-            buttons.ibutton("🚫 Drive Link", "no_drive_link")
-    else:
-        buttons.ubutton("☁️ Drive Link", link)
-    return buttons
-
-
 async def set_commands(bot):
     if config_dict['SET_COMMANDS']:
         await bot.set_bot_commands(commands=[
-            BotCommand(BotCommands.StartCommand, "Start the bot"),
-            BotCommand(BotCommands.StatsCommand, "Get bot stats"),
-            BotCommand(BotCommands.StatusCommand, "Get bot status"),
-            BotCommand(BotCommands.RestartCommand, "Restart the bot"),
-            BotCommand(BotCommands.CloneCommand, "Start cloning"),
-            BotCommand(BotCommands.MirrorCommand[0], "Start mirroring"),
-            BotCommand(BotCommands.LeechCommand[0], "Start leeching"),
-            BotCommand(BotCommands.QbMirrorCommand[0], "Start qb mirroring"),
-            BotCommand(BotCommands.QbLeechCommand[0], "Start qb leeching"),
-            BotCommand(BotCommands.YtdlCommand[0], "Mirror youtube file"),
-            BotCommand(BotCommands.YtdlLeechCommand[0], "Leech youtube file"),
-            BotCommand(BotCommands.CancelTaskCommand[0], "Cancel any task"),
-            BotCommand(BotCommands.CancelAllCommand, "Cancel all task"),
-            BotCommand(BotCommands.ListCommand, "Search file in google drive"),
-            BotCommand(BotCommands.DeleteCommand, "Delete google drive file"),
-            BotCommand(BotCommands.ForceStartCommand[0], "Force start a task"),
-            BotCommand(BotCommands.ListCommand, "List files in Google Drive"),
-            BotCommand(BotCommands.SearchCommand, "Search files in Google Drive"),
-            BotCommand(BotCommands.UsersCommand, "Check users"),
-            BotCommand(BotCommands.AuthorizeCommand, "Authorize a user"),
-            BotCommand(BotCommands.UnAuthorizeCommand, "Unauthorize a user"),
-            BotCommand(BotCommands.AddSudoCommand, "Add a sudo user"),
-            BotCommand(BotCommands.RmSudoCommand, "Remove a sudo user"),
-            BotCommand(BotCommands.PingCommand, "Ping the bot"),
-            BotCommand(BotCommands.HelpCommand, "Get help"),
-            BotCommand(BotCommands.LogCommand, "Get bot log"),
-            BotCommand(BotCommands.BotSetCommand[0], "Bot settings"),
-            BotCommand(BotCommands.UserSetCommand[0], "User settings"),
-            BotCommand(BotCommands.BtSelectCommand, "Select a BT download"),
-            BotCommand(BotCommands.RssCommand, "Manage RSS feeds"),
+            BotCommand(BotCommands.StartCommand, "Mulai bot"),
+            BotCommand(BotCommands.StatsCommand, "Lihat statistik bot"),
+            BotCommand(BotCommands.StatusCommand, "Lihat status bot"),
+            BotCommand(BotCommands.RestartCommand, "Restart bot"),
+            BotCommand(BotCommands.CloneCommand, "Mulai cloning"),
+            BotCommand(BotCommands.MirrorCommand[0], "Mulai mirroring"),
+            BotCommand(BotCommands.LeechCommand[0], "Mulai leeching"),
+            BotCommand(BotCommands.QbMirrorCommand[0], "Mulai qb mirroring"),
+            BotCommand(BotCommands.QbLeechCommand[0], "Mulai qb leeching"),
+            BotCommand(BotCommands.YtdlCommand[0], "Mirror file YouTube"),
+            BotCommand(BotCommands.YtdlLeechCommand[0], "Leech file YouTube"),
+            BotCommand(BotCommands.CancelTaskCommand[0], "Batalin task"),
+            BotCommand(BotCommands.CancelAllCommand, "Batalin semua task"),
+            BotCommand(BotCommands.ListCommand, "Cari file di Google Drive"),
+            BotCommand(BotCommands.DeleteCommand, "Hapus file di Google Drive"),
+            BotCommand(BotCommands.ForceStartCommand[0], "Paksa mulai task"),
+            BotCommand(BotCommands.ListCommand, "Lihat file di Google Drive"),
+            BotCommand(BotCommands.SearchCommand, "Cari file di Google Drive"),
+            BotCommand(BotCommands.UsersCommand, "Cek user"),
+            BotCommand(BotCommands.AuthorizeCommand, "Izinkan user"),
+            BotCommand(BotCommands.UnAuthorizeCommand, "Cabut izin user"),
+            BotCommand(BotCommands.AddSudoCommand, "Tambah sudo user"),
+            BotCommand(BotCommands.RmSudoCommand, "Hapus sudo user"),
+            BotCommand(BotCommands.PingCommand, "Cek ping bot"),
+            BotCommand(BotCommands.HelpCommand, "Bantuan bot"),
+            BotCommand(BotCommands.LogCommand, "Lihat log bot"),
+            BotCommand(BotCommands.BotSetCommand[0], "Pengaturan bot"),
+            BotCommand(BotCommands.UserSetCommand[0], "Pengaturan user"),
+            BotCommand(BotCommands.BtSelectCommand, "Pilih BT download"),
+            BotCommand(BotCommands.RssCommand, "Atur RSS feeds"),
         ])
 
 
@@ -753,10 +740,9 @@ async def start(client, message):
         return await send_to_chat(message=message, text=f"Token refreshed successfully", buttons=None, reply=True, photo=True)
     else:
         buttons = ButtonMaker()
-        buttons.ubutton("Repo", "https://github.com/SN-Abdullah-Al-Noman/Atrocious_Mirror")
-        buttons.ubutton("Owner", "https://t.me/AtrociousMirrorBackup")
-        reply_markup = buttons.build_menu(2)
-        start_string = f'''This bot can mirror all your links|files|torrents to Google Drive or any rclone cloud or to telegram.\nType /{BotCommands.HelpCommand} to get a list of available commands'''
+        buttons.ubutton("Master", "https://t.me/u_xzyp")
+        reply_markup = buttons.build_menu(1)
+        start_string = f'''Hi, im {bot_name} i can mirror all your\n\n<blockquote>links|files|torrents to Google Drive or any rclone cloud or to telegram.</blockquote>\nType /{BotCommands.HelpCommand} to get a list of available commands\n\n<b>Uptime: {get_readable_time(time() - botStartTime)}</b>'''
         await send_to_chat(message=message, text=start_string, buttons=reply_markup, reply=True, photo=True)
     await DbManager().update_pm_users(message.from_user.id)
 

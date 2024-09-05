@@ -44,7 +44,6 @@ from bot.helper.telegram_helper.message_utils import (
     delete_status,
     update_status_message,
 )
-from bot.modules.func import get_drive_link_button, get_bot_pm_button, send_to_chat
 
 
 class TaskListener(TaskConfig):
@@ -146,7 +145,7 @@ class TaskListener(TaskConfig):
         if self.join and await aiopath.isdir(up_path):
             await join_files(up_path)
 
-        if self.extract:
+        if self.extract and not self.isNzb:
             up_path = await self.proceedExtract(up_path, gid)
             if self.isCancelled:
                 return
@@ -253,47 +252,29 @@ class TaskListener(TaskConfig):
             and DATABASE_URL
         ):
             await DbManager().rm_complete_task(self.message.link)
-        pmbutton = await get_bot_pm_button()
-        if config_dict["SAFE_MODE"]:
-            msg = f"<b>Safe Mode Enabled</b>"
-        else:
-            msg = f"<b>Name: </b><code>{escape(self.name)}</code>"
-        msg += f"\n\n<b>• Size: </b>{get_readable_file_size(self.size)}"
+        msg = (
+            f"<b><i>{escape(self.name)}</i></b>\n\n"
+            f"<b>Size: </b>{get_readable_file_size(self.size)}\n"
+        )
         LOGGER.info(f"Task Done: {self.name}")
         if self.isLeech:
-            msg += f"\n<b>• Total Files: </b>{folders}"
+            msg = f"<b><i>#LeechDone</i></b>\n" + msg
+            msg += f"<b>Total Files: </b>{folders}"
             if mime_type != 0:
-                msg += f"\n<b>• Corrupted Files: </b>{mime_type}"
-            msg += f"\n\n<b>• User: </b>{self.tag}\n<b>• User ID: </b> <code>{self.message.from_user.id}</code>\n\n"
+                msg += f"\n<b>Corrupted Files: </b>{mime_type}"
+            msg += f"\n<b>cc: </b>{self.tag}\n"
             if not files:
-                if config_dict["BOT_PM"] and self.message.chat.type != self.message.chat.type.PRIVATE:
-                    pmmsg = f"<b>Files has been sent in private.</b>"
-                    await sendMessage(self.message, msg +pmmsg, pmbutton)
-                else:
-                    await sendMessage(self.message, msg)
+                msg += f"\n<b><i>Files has been sent to DM</i></b>"
+                await sendMessage(self.message, msg)
             else:
-                fmsg = ""
-                for index, (link, name) in enumerate(files.items(), start=1):
-                    fmsg += f"{index}. <a href='{link}'>{name}</a>\n"
-                    if len(fmsg.encode() + msg.encode()) > 4000:
-                        await sendMessage(self.message, msg + fmsg)
-                        await sleep(1)
-                        fmsg = ""
-                if fmsg != "":
-                    if config_dict["SAFE_MODE"]:
-                        fmsg = ""
-                        pmmsg = f"<b>Files has been sent in private.</b>"
-                    else:
-                        pmmsg = f"\n<b>Files has been sent in private.</b>"
-                    if config_dict["BOT_PM"] and self.message.chat.type != self.message.chat.type.PRIVATE:
-                        await sendMessage(self.message, msg + fmsg + pmmsg, pmbutton)
-                    else:
-                        await sendMessage(self.message, msg + fmsg)
+                msg += f"\n<b><i>Files has been sent to DC</i></b>"
+                await sendMessage(self.message, msg)
         else:
-            msg += f"\n<b>• Type: </b>{mime_type}"
+            msg = f"<b><i>#MirrorDone</i></b>\n" + msg
+            msg += f"<b>Type: </b>{mime_type}"
             if mime_type == "Folder":
-                msg += f"\n<b>• SubFolders: </b>{folders}"
-                msg += f"\n<b>• Files: </b>{files}"
+                msg += f"\n<b>SubFolders: </b>{folders}"
+                msg += f"\n<b>Files: </b>{files}"
             if (
                 link
                 or rclonePath
@@ -302,9 +283,9 @@ class TaskListener(TaskConfig):
             ):
                 buttons = ButtonMaker()
                 if link:
-                    buttons = await get_drive_link_button(self.message, link)
-                elif rclonePath:
-                    msg += f"\n\n• Path: <code>{rclonePath}</code>"
+                    buttons.ubutton("Cloud Link", link, "header")
+                else:
+                    msg += f"\n\nPath: <code>{rclonePath}</code>"
                 if (
                     rclonePath
                     and (RCLONE_SERVE_URL := config_dict["RCLONE_SERVE_URL"])
@@ -315,7 +296,7 @@ class TaskListener(TaskConfig):
                     share_url = f"{RCLONE_SERVE_URL}/{remote}/{url_path}"
                     if mime_type == "Folder":
                         share_url += "/"
-                    buttons.ubutton("🔗 Rclone Link", share_url)
+                    buttons.ubutton("Rclone Link", share_url)
                 if not rclonePath and dir_id:
                     INDEX_URL = ""
                     if self.privateLink:
@@ -324,21 +305,17 @@ class TaskListener(TaskConfig):
                         INDEX_URL = config_dict["INDEX_URL"]
                     if INDEX_URL:
                         share_url = f"{INDEX_URL}findpath?id={dir_id}"
-                        buttons.ubutton("⚡ Index Link", share_url)
+                        buttons.ubutton("Direct Link", share_url)
                         if mime_type.startswith(("image", "video", "audio")):
                             share_urls = f"{INDEX_URL}findpath?id={dir_id}&view=true"
-                            buttons.ubutton("🌐 View Link", share_urls)
+                            buttons.ubutton("View Link", share_urls)
                 button = buttons.build_menu(2)
             else:
-                msg += f"\n\n• Path: <code>{rclonePath}</code>"
+                msg += f"\n\nPath: <code>{rclonePath}</code>"
                 button = None
-            msg += f"\n\n<b>• User: </b>{self.tag}\n<b>• User ID: </b> <code>{self.message.from_user.id}</code>"
-            if config_dict["BOT_PM"] and self.message.chat.type != self.message.chat.type.PRIVATE:
-                bmsg = f"\n\n<b>Links has been sent in private.</b>"
-                await send_to_chat(chat_id=self.message.from_user.id, message=self.message, text=msg, buttons=button, photo=True)
-                await sendMessage(self.message, msg+bmsg, pmbutton)
-            else:
-                await sendMessage(self.message, msg, button)
+            msg += f"\n<b>cc: </b>{self.tag}"
+            msg += f"\n\n<b><i>Click the button below to Download</b></i>"
+            await sendMessage(self.message, msg, button)
         if self.seed:
             if self.newDir:
                 await clean_target(self.newDir)

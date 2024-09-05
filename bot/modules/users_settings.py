@@ -155,11 +155,11 @@ async def get_user_settings(from_user):
     default_upload = (
         user_dict.get("default_upload", "") or config_dict["DEFAULT_UPLOAD"]
     )
-    du = "Gdrive API" if default_upload == "gd" else "Rclone"
-    dub = "Gdrive API" if default_upload != "gd" else "Rclone"
-    buttons.ibutton(f"Upload using {dub}", f"userset {user_id} {default_upload}")
+    du = "GD API" if default_upload == "gd" else "Rclone"
+    dub = "GD API" if default_upload != "gd" else "Rclone"
+    buttons.ibutton(f"With {dub}", f"userset {user_id} {default_upload}")
 
-    buttons.ibutton("Excluded Extensions", f"userset {user_id} ex_ex")
+    buttons.ibutton("Excluded Exts", f"userset {user_id} ex_ex")
     if user_dict.get("excluded_extensions", False):
         ex_ex = user_dict["excluded_extensions"]
     elif "excluded_extensions" not in user_dict and GLOBAL_EXTENSION_FILTER:
@@ -182,32 +182,16 @@ async def get_user_settings(from_user):
         buttons.ibutton("Reset All", f"userset {user_id} reset")
 
     buttons.ibutton("Close", f"userset {user_id} close")
+text = f"""<b><u>Settings for {name}</u></b>
 
-    text = f"""<u>Settings for {name}</u>
-Leech Type is <b>{ltype}</b>
-Custom Thumbnail <b>{thumbmsg}</b>
-Leech Split Size is <b>{split_size}</b>
-Equal Splits is <b>{equal_splits}</b>
-Media Group is <b>{media_group}</b>
-Leech Prefix is <code>{escape(lprefix)}</code>
-Leech Destination is <code>{leech_dest}</code>
-Leech by <b>{leech_method}</b> session
-Mixed Leech is <b>{mixed_leech}</b>
-Leech Metadata Text is <code>{escape(metadatatext)}</code>
-Leech Attachment Url is <code>{escape(attachmenturl)}</code>
-Rclone Config <b>{rccmsg}</b>
-Rclone Path is <code>{rccpath}</code>
-Gdrive Token <b>{tokenmsg}</b>
-Upload Paths is <b>{upload_paths}</b>
-Gdrive ID is <code>{gdrive_id}</code>
-Index Link is <code>{index}</code>
-Stop Duplicate is <b>{sd_msg}</b>
-Default Upload is <b>{du}</b>
-Name substitution is <b>{ns_msg}</b>
-Excluded Extensions is <code>{ex_ex}</code>
-YT-DLP Options is <b><code>{escape(ytopt)}</code></b>"""
+Leech Type: <b>{ltype}</b>
+Split Size: <b>{split_size}</b>
+Destination: <b>{leech_dest}</b>
+Upload Method: <b>{du}</b>
+Stop Duplicate: <b>{sd_msg}</b>
 
-    return text, buttons.build_menu(1)
+<i><b>Don't touch anything if you’re a noob.</b></i>"""
+    return text, buttons.build_menu(2)
 
 
 async def update_user_settings(query):
