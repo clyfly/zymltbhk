@@ -90,7 +90,7 @@ class TgUploader:
             if config_dict["BOT_PM"]:
                 self._listener.upDest = self._listener.message.from_user.id
         if self._listener.upDest:
-            msg += f"<b><a href='{self._listener.message.link if self._listener.isSuperChat else self._listener.message.text.lstrip('/')}'>{bot_name} sedang mengirimkan file anda</a></b>"
+            msg = f"<b><a href='{self._listener.message.link if self._listener.isSuperChat else self._listener.message.text.lstrip('/')}'>{bot_name} sedang mengirimkan file anda</a></b>"
             try:
                 if self._user_session:
                     self._sent_msg = await user.send_message(
