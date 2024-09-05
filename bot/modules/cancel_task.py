@@ -3,7 +3,7 @@ from re import search as re_search
 from pyrogram.filters import command, regex
 from pyrogram.handlers import MessageHandler, CallbackQueryHandler
 
-from bot import task_dict, bot, task_dict_lock, OWNER_ID, user_data, multi_tags
+from bot import task_dict, bot, bot_name, task_dict_lock, OWNER_ID, user_data, multi_tags
 from bot.helper.ext_utils.bot_utils import new_task
 from bot.helper.ext_utils.status_utils import getTaskByGid, getAllTasks, MirrorStatus
 from bot.helper.telegram_helper import button_build
