@@ -93,7 +93,7 @@ class gdSearch(GoogleDriveHelper):
             return {"files": []}
 
     def drive_list(self, fileName, target_id="", user_id=""):
-        msg = ""
+        msg = f"""<figure><img src='https://i.pinimg.com/736x/04/3c/c7/043cc74e58d17f6715746baecddc99d3.jpg'></figure>"""
         fileName = self.escapes(str(fileName))
         contents_no = 0
         telegraph_content = []
@@ -131,7 +131,7 @@ class gdSearch(GoogleDriveHelper):
                 else:
                     continue
             if not Title:
-                msg += f"<h4>Search Result For {fileName}</h4>"
+                msg += f"<h4>Search Result For {fileName} 🐉</h4>"
                 Title = True
             if drive_name:
                 msg += f"╾────────────╼<br><b>{drive_name}</b><br>╾────────────╼<br>"
