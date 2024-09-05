@@ -742,7 +742,7 @@ async def start(client, message):
         buttons = ButtonMaker()
         buttons.ubutton("Master", "https://t.me/u_xzyp")
         reply_markup = buttons.build_menu(1)
-        start_string = f'''Hi, im {bot_name} i can mirror all your\n\n<blockquote>links|files|torrents to Google Drive or any rclone cloud or to telegram.</blockquote>\nType /{BotCommands.HelpCommand} to get a list of available commands\n\n<b>Uptime: {get_readable_time(time() - botStartTime)}</b>'''
+        start_string = f'''hi, aku {bot_name} siap membantumu 🤭\n\n<blockquote>Aku bisa mirror semua link, file, atau torrent kamu ke Google Drive, rclone cloud, atau ke Telegram.</blockquote>\n\nKetik /{BotCommands.HelpCommand} buat lihat daftar perintah yang tersedia.\n\n<b>Uptime: {get_readable_time(time() - botStartTime)}</b>'''
         await send_to_chat(message=message, text=start_string, buttons=reply_markup, reply=True, photo=True)
     await DbManager().update_pm_users(message.from_user.id)
 
